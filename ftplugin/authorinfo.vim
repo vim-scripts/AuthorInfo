@@ -99,20 +99,20 @@ function s:AddTitle()
     let firstLine = line('.')
     call setline('.',noTypeChar.'=============================================================================')
     normal o
-    call setline('.',noTypeChar.preChar.'  Author:          '.g:vimrc_author.' - '.g:vimrc_homepage)
+    call setline('.',noTypeChar.preChar.'     FileName: '.expand("%:t"))
     normal o
-    call setline('.',noTypeChar.preChar.'  Email:           '.g:vimrc_email)
-    normal o
-    call setline('.',noTypeChar.preChar.'  FileName:        '.expand("%:t"))
-    normal o
-    call setline('.',noTypeChar.preChar.'  Description:     ')
+    call setline('.',noTypeChar.preChar.'         Desc: ')
     let gotoLn = line('.')
     normal o
-    call setline('.',noTypeChar.preChar.'  Version:         0.0.1')
+    call setline('.',noTypeChar.preChar.'       Author: '.g:vimrc_author.' - '.g:vimrc_homepage)
     normal o
-    call setline('.',noTypeChar.preChar.'  LastChange:      '.strftime("%Y-%m-%d %H:%M:%S"))
+    call setline('.',noTypeChar.preChar.'        Email: '.g:vimrc_email)
     normal o
-    call setline('.',noTypeChar.preChar.'  History:         ')
+    call setline('.',noTypeChar.preChar.'      Version: 0.0.1')
+    normal o
+    call setline('.',noTypeChar.preChar.'   LastChange: '.strftime("%Y-%m-%d %H:%M:%S"))
+    normal o
+    call setline('.',noTypeChar.preChar.'      History:')
     normal o
     call setline('.',noTypeChar.'=============================================================================')
     let lastLine = line('.')
@@ -121,12 +121,12 @@ function s:AddTitle()
     call s:AfterTitle()
 
     if hasMul == 1
-        exe 'normal v'.(lastLine-firstLine).'k,cm'
+        exe 'normal '.firstLine.'Gv'.lastLine.'G,cm'
     else
-        exe 'normal v'.(lastLine-firstLine).'k,cl'
+        exe 'normal '.firstLine.'Gv'.lastLine.'G,cl'
     endif
 
-    exe 'normal =='.gotoLn.'G'
+    exe 'normal '.gotoLn.'G'
     startinsert!
     echohl WarningMsg | echo "Succ to add the copyright." | echohl None
 endf
