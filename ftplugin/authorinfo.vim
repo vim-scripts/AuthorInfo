@@ -3,10 +3,19 @@
 "  Email:           zny2008@gmail.com
 "  FileName:        authorinfo.vim
 "  Description:     
-"  Version:         1.1
-"  LastChange:      2011-02-15 19:30:12
-"  History:         
+"  Version:         1.4
+"  LastChange:      2011-02-23 16:42:42
+"  History:         fix bug for NerdComment's <leader>
 "=============================================================================
+
+if exists("mapleader")
+    let s:t_mapleader = mapleader
+elseif exists("g:mapleader")
+    let s:t_mapleader = g:mapleader
+else
+    let s:t_mapleader = '\'
+endif
+
 function! g:CheckFileType(type)
     let t_filetypes = split(&filetype,'\.')
     if index(t_filetypes,a:type)>=0
@@ -77,15 +86,16 @@ function s:AddTitle()
     let hasMul = 0
     let preChar = ''
     let noTypeChar = ''
+
     call setline('.','test mul')
     let oldline = getline('.')
-    normal ,cm
+    exec 'normal '.s:t_mapleader.'cm'
     let newline = getline('.')
     if oldline != newline
         let hasMul = 1
         let preChar = '#'
     else
-        normal ,cl
+        exec 'normal '.s:t_mapleader.'cl'
         let newline = getline('.')
         if oldline == newline
             let hasMul = -1
@@ -104,9 +114,11 @@ function s:AddTitle()
     call setline('.',noTypeChar.preChar.'         Desc: ')
     let gotoLn = line('.')
     normal o
-    call setline('.',noTypeChar.preChar.'       Author: '.g:vimrc_author.' - '.g:vimrc_homepage)
+    call setline('.',noTypeChar.preChar.'       Author: '.g:vimrc_author)
     normal o
     call setline('.',noTypeChar.preChar.'        Email: '.g:vimrc_email)
+    normal o
+    call setline('.',noTypeChar.preChar.'     HomePage: '.g:vimrc_homepage)
     normal o
     call setline('.',noTypeChar.preChar.'      Version: 0.0.1')
     normal o
@@ -121,9 +133,9 @@ function s:AddTitle()
     call s:AfterTitle()
 
     if hasMul == 1
-        exe 'normal '.firstLine.'Gv'.lastLine.'G,cm'
+        exe 'normal '.firstLine.'Gv'.lastLine.'G'.s:t_mapleader.'cm'
     else
-        exe 'normal '.firstLine.'Gv'.lastLine.'G,cl'
+        exe 'normal '.firstLine.'Gv'.lastLine.'G'.s:t_mapleader.'cl'
     endif
 
     exe 'normal '.gotoLn.'G'
