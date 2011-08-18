@@ -3,10 +3,15 @@
 "  Email:           zny2008@gmail.com
 "  FileName:        authorinfo.vim
 "  Description:     
-"  Version:         1.4
+"  Version:         1.5
 "  LastChange:      2011-02-23 16:42:42
-"  History:         fix bug for NerdComment's <leader>
+"  History:         support bash's #!xxx
+"                   fix bug for NerdComment's <leader>
 "=============================================================================
+if exists('g:loaded_authorinfo')
+    finish
+endif
+let g:loaded_authorinfo= 1
 
 if exists("mapleader")
     let s:t_mapleader = mapleader
@@ -28,6 +33,7 @@ function s:DetectFirstLine()
     "跳转到指定区域的第一行，开始操作
     exe 'normal '.1.'G'
     let arrData = [
+                \['sh',['^#!.*$']],
                 \['python',['^#!.*$','^#.*coding:.*$']],
                 \['php',['^<?.*']]
                 \]
